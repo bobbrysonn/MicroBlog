@@ -1,8 +1,19 @@
 import Spinner from "react-bootstrap/Spinner";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import Post from "./post";
 
 export default function Posts() {
     const [posts, setPosts] = useState();
+
+    // Base api url
+    const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
+
+    // Fetch posts
+    useEffect(() => {
+        fetch(BASE_API_URL + "/api/posts")
+            .then(response => response.json())
+            .then(result => setPosts(result.data))
+    }, []);
 
     // If posts if undefined, render spiner
     // Else show posts
@@ -16,11 +27,7 @@ export default function Posts() {
             <ul>
                 {posts.map(post => {
                     return (
-                        <li key={post.id}>
-                            <strong>{post.author.fullname}</strong> &mdash; {post.timestamp}
-                            <p>{post.text}</p>
-                            <br />
-                        </li>
+                        <Post post={post} key={post.id} />
                     )
                 })}
             </ul>

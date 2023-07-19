@@ -17,13 +17,43 @@
 }
 
 .sidebar a {
-    color: #444;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    padding-left: .5rem;
 }
 
 .sidebar a:hover {
-    color: #e4c4c4;
+    background-color: rgb(244, 245, 246);
 }
 
-.sidebar a:visited {
-    color: #444;
+.post {
+    align-items: flex-start;
+    border-bottom: 1px solid #eee;
+}
+
+.post:hover {
+    background-color: rgb(245, 246, 247);
+}
+
+.post a {
+    color: #14c;
+    text-decoration: none;
+}
+
+.post a:visited {
+    color: #14c;
+    
+}
+
+a.active {
+    background-color: rgb(244, 245, 246);
+}
+
+.post img {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.post p {
+    margin-bottom: 0.2rem;
 }
