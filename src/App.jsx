@@ -1,3 +1,4 @@
+import ApiProvider from "./contexts/ApiProvider";
 import Header from "./components/header";
 import ExplorePage from "./pages/ExplorePage";
 import FeedPage from "./pages/FeedPage";
@@ -10,17 +11,18 @@ import "./App.css";
 export default function App() {
     return (
         <BrowserRouter>
-            {/* Persistent stuff */}
-            <Header />
-            
-            {/* All possible routes */}
-            <Routes>
-                <Route path="/" element={<FeedPage />} />
-                <Route path="/explore" element={<ExplorePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/user/:username" element={<UserPage />} />
-                <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
+            <ApiProvider>
+                {/* Persistent stuff */}
+                <Header />
+                {/* All possible routes */}
+                <Routes>
+                    <Route path="/" element={<FeedPage />} />
+                    <Route path="/explore" element={<ExplorePage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/user/:username" element={<UserPage />} />
+                    <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+            </ApiProvider>
         </BrowserRouter>
     );
 }

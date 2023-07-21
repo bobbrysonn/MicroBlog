@@ -1,18 +1,27 @@
-import Spinner from "react-bootstrap/Spinner";
-import { Fragment, useEffect, useState } from "react";
 import Post from "./post";
+import Spinner from "react-bootstrap/Spinner";
+import { useApi } from "../contexts/ApiProvider";
+import { Fragment, useEffect, useState } from "react";
 
 export default function Posts() {
     const [posts, setPosts] = useState();
+    const api = useApi();
 
     // Base api url
     const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 
     // Fetch posts
     useEffect(() => {
-        fetch(BASE_API_URL + "/api/posts")
-            .then(response => response.json())
-            .then(result => setPosts(result.data))
+        (async () => {
+            const response = await api.get("/feed");
+
+            // Check whether response is ok
+            if (response.ok) {
+                setPosts(response.body.data);
+            } else {
+                setPosts(null);
+            }
+        })()
     }, []);
 
     // If posts if undefined, render spiner
