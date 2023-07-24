@@ -6,6 +6,7 @@ import { format } from "timeago.js";
 import { useApi } from "../contexts/ApiProvider";
 import { useParams } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
+import Posts from "../components/posts";
 
 export default function UserPage() {
     const { username } = useParams();
@@ -29,18 +30,21 @@ export default function UserPage() {
                     {user === null ? (
                         <h3>User not found</h3>
                     ): (
-                        <Stack direction="horizontal" gap={4}>
-                            <Image src={user.avatar_url + "&s=128"} roundedCircle />
-                            <div>
-                                <h1>{user.username}</h1>
-                                {user.about_me && <h5>{user.about_me}</h5>}
-                                <p>
-                                    Member since: {format(user.first_seen)}
-                                    <br />
-                                    Last seen: {format(user.last_seen)}
-                                </p>
-                            </div>
-                        </Stack>
+                        <Fragment>
+                            <Stack direction="horizontal" gap={4}>
+                                <Image src={user.avatar_url + "&s=128"} roundedCircle />
+                                <div>
+                                    <h1>{user.username}</h1>
+                                    {user.about_me && <h5>{user.about_me}</h5>}
+                                    <p>
+                                        Member since: {format(user.first_seen)}
+                                        <br />
+                                        Last seen: {format(user.last_seen)}
+                                    </p>
+                                </div>
+                            </Stack>
+                            <Posts content={user.id} />
+                        </Fragment>
                     )}
                 </Fragment>}
         </Body>
