@@ -1,17 +1,29 @@
+import More from "./More";
 import Post from "./post";
+import PropTypes from "prop-types";
 import Spinner from "react-bootstrap/Spinner";
 import { useApi } from "../contexts/ApiProvider";
 import { Fragment, useEffect, useState } from "react";
 
 export default function Posts({ content }) {
     const [posts, setPosts] = useState();
-    const api = useApi();
+    const [pagination, setPagination] = useState();
 
-    // Base api url
-    const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
+    const api = useApi();
 
     // Determine which posts to fetch
     let url;
+
+    async function loadNextPage() {
+        const response = await api.get(url, {
+            after: posts[posts.length - 1].timestamp,
+        });
+
+        if (response.ok) {
+            setPosts([...posts, ...response.body.data]);
+            setPagination(response.body.pagination);
+        }
+    }
 
     switch(content) {
         case "feed":
@@ -34,6 +46,7 @@ export default function Posts({ content }) {
             // Check whether response is ok
             if (response.ok) {
                 setPosts(response.body.data);
+                setPagination(response.body.pagination);
             } else {
                 setPosts(null);
             }
@@ -44,19 +57,25 @@ export default function Posts({ content }) {
     // Else show posts
     return (
         <Fragment>
-        {posts === undefined ? (
-            <Spinner variant="border" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </Spinner>
-        ) : (
-            <ul>
-                {posts.map(post => {
-                    return (
-                        <Post post={post} key={post.id} />
-                    )
-                })}
-            </ul>
-        )}
+            {posts === undefined ? (
+                <Spinner variant="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            ) : (
+                <ul>
+                    {posts.map(post => {
+                        return (
+                            <Post post={post} key={post.id} />
+                        )
+                    })}
+                </ul>
+            )}
+
+            <More pagination={pagination} loadNextPage={loadNextPage} />
         </Fragment>
     )
+}
+
+Posts.propTypes = {
+    content: PropTypes.string,
 }

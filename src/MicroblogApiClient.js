@@ -17,7 +17,7 @@ export default class MicroblogApiClient {
 
         // Execute
         try {
-            response = await fetch(this.base_url + options.url, {
+            response = await fetch(this.base_url + options.url + query, {
                 method: options.method,
                 headers: {
                     "Content-Type": "application/json",
