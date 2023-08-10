@@ -57,3 +57,8 @@ a.active {
 .post p {
     margin-bottom: 0.2rem;
 }
+
+.InputField {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
